@@ -2,6 +2,7 @@ from flask import Flask,render_template,request
 import os
 from datetime import datetime
 from pymongo import MongoClient
+import pdfplumber
 
 app = Flask(__name__)
 client=MongoClient("mongodb://localhost:27017/")
@@ -23,7 +24,12 @@ def upload():
     file=request.files["resume"]
 
     if file and allowed_file(file.filename):
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"],file.filename))
+        filepath=file.save(os.path.join(app.config["UPLOAD_FOLDER"],file.filename))
+        with pdfplumber.open(filepath) as pdf:
+            text=""
+            for page in pdf.pages:
+                text+=page.extract_text()
+                
         upload_time=datetime.now().strftime("%d-%m-%Y %I:%M %p")
 
         document = {"filename":file.filename, "upload_time":upload_time, "status": "Success"}
