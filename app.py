@@ -31,13 +31,21 @@ def upload():
             for page in pdf.pages:
                 text+=page.extract_text()
             print(text)
+
+        skills=["Python","Java","JavaScript","HTML","CSS","SQL","MongoDB","Flask","Django","React","Git","Docker"]
+        found_skills=[]
+        for skill in skills:
+            if skill.lower() in text.lower():
+                found_skills.append(skill)
+        score=0
+        score=len(found_skills)*10
+        if score>100:
+            score=100
         upload_time=datetime.now().strftime("%d-%m-%Y %I:%M %p")
 
         document = {"filename":file.filename, "upload_time":upload_time, "status": "Success"}
-
         collection.insert_one(document)
-
-        return render_template("result.html",filename=file.filename,upload_time=upload_time)
+        return render_template("result.html",filename=file.filename,upload_time=upload_time,text=text,found_skills=found_skills,score=score)
     return "Only PDF files are allowed!"
 
 

@@ -20,6 +20,20 @@
         <h3>Status:</h3>
         <p>Sucess</p>
 
+        <h3>Extracted Resume:</h3>
+        <pre>{{text}}</pre>
+
+        <h2>Resume Score:</h2>
+        <h3>{{score}}/100</h3>
+
+        <h2>Detected Skills:</h2>
+        <ul>
+            {% for skill in found_skills %}
+                <li>{{skill}}</li>
+            {% endfor %}
+        </ul>
+
+        
         <a href="/">Upload Another Resume</a>
     </div>
 </body>
