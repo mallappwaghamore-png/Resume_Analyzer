@@ -37,15 +37,21 @@ def upload():
         for skill in skills:
             if skill.lower() in text.lower():
                 found_skills.append(skill)
+
+        missing_skills=[]
+        for skill in skills:
+            if skill not in found_skills:
+                missing_skills.append(skill)
         score=0
         score=len(found_skills)*10
         if score>100:
             score=100
+
         upload_time=datetime.now().strftime("%d-%m-%Y %I:%M %p")
 
         document = {"filename":file.filename, "upload_time":upload_time, "status": "Success"}
         collection.insert_one(document)
-        return render_template("result.html",filename=file.filename,upload_time=upload_time,text=text,found_skills=found_skills,score=score)
+        return render_template("result.html",filename=file.filename,upload_time=upload_time,text=text,found_skills=found_skills,score=score,missing_skills=missing_skills)
     return "Only PDF files are allowed!"
 
 
