@@ -47,11 +47,20 @@ def upload():
         if score>100:
             score=100
 
+        experience_keywords=["experience","internship","worked","company","developer","engineer","software engineer","years"]
+        text_lower=text.lower()
+        experience_status="Fresher"
+        for keyword in experience_keywords:
+            if keyword in text_lower:
+                experience_status="Experience"
+                break
+                
+
         upload_time=datetime.now().strftime("%d-%m-%Y %I:%M %p")
 
         document = {"filename":file.filename, "upload_time":upload_time, "status": "Success"}
         collection.insert_one(document)
-        return render_template("result.html",filename=file.filename,upload_time=upload_time,text=text,found_skills=found_skills,score=score,missing_skills=missing_skills)
+        return render_template("result.html",filename=file.filename,upload_time=upload_time,text=text,found_skills=found_skills,score=score,missing_skills=missing_skills,experience_status=experience_status)
     return "Only PDF files are allowed!"
 
 
